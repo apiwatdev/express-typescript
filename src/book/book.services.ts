@@ -1,17 +1,23 @@
 import { CRUD } from "../interface/curd.interface";
+import { CreateBookDTO } from "./dto/create-book.dto";
+import { UpdateBookDTO } from "./dto/update-book.dto";
 
+const books: any = []
 export class BookService implements CRUD {
   constructor() {}
   async getBooks(){
-      return []
+      return books
   }
   async list(limit: number, page: number) {}
-  async create(resource: any) {}
-  async updateById(id: string, resource: any) {
-    return "";
+  async create(dto: CreateBookDTO) {
+    books.push(dto)
+    return dto
   }
-  async getById(id: string) {
-    return "";
+  async updateById(id: string, dto: UpdateBookDTO) {
+    return {id,...dto};
+  }
+  async getById(id: string) : Promise<Object> {
+    return {};
   }
   async deleteById(id: string) {
     return "";
