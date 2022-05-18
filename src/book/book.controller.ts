@@ -1,4 +1,4 @@
-import e, { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { HttpStatusCode } from "../enum/http-status-code";
 import { HttpException } from "../exception";
 import { validateRequestBodyDto } from "../validator";
