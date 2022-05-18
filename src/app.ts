@@ -3,6 +3,8 @@ import 'dotenv/config'
 import morgan from "morgan";
 import routes from "./routes";
 import * as MySQL from "./mysql";
+import { errorMiddleware } from "./middleware";
+
 
 
 morgan('tiny')
@@ -17,6 +19,7 @@ MySQL.inti()
 
 routes(app)
 
+app.use(errorMiddleware)
 app.listen(port, () => {
   console.log(`Application listening at http://localhost:${port}`);
 });

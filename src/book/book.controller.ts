@@ -1,8 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import e, { NextFunction, Request, Response } from "express";
 import { HttpStatusCode } from "../enum/http-status-code";
+import { HttpException } from "../exception";
 import { validateRequestBodyDto } from "../validator";
 import { BookService } from "./book.services";
-import { CreateBookDTO,UpdateBookDTO } from "./dto";
+import { CreateBookDTO, UpdateBookDTO } from "./dto";
 
 export class BookController {
   bookService: BookService;
@@ -10,11 +11,29 @@ export class BookController {
     this.bookService = new BookService();
   }
   async getBooks(req: Request, res: Response, next: NextFunction) {
-    return res.send(await this.bookService.getBooks());
+    try {
+      return res.send(await this.bookService.getBooks());
+    } catch (error) {
+      next(new HttpException());
+    }
   }
   async getBookById(req: Request, res: Response, next: NextFunction) {
-    const id: string = req.params.id;
-    return res.send(await this.bookService.getById(id));
+    try {
+      const id: string = req.params.id;
+      const book = await this.bookService.getById(id);
+      if (book) {
+        res.send(book);
+      } else {
+        next(
+          new HttpException(
+            HttpStatusCode.NOT_FOUND,
+            `Book with id ${id} not found.`
+          )
+        );
+      }
+    } catch {
+      next(new HttpException());
+    }
   }
   async createBook(req: Request, res: Response, next: NextFunction) {
     try {
@@ -27,7 +46,7 @@ export class BookController {
         });
       } else {
         const book = await this.bookService.create(dto.data);
-        return res.send(book)
+        return res.send(book);
       }
     } catch (error) {
       next(error);
@@ -49,7 +68,16 @@ export class BookController {
         });
       } else {
         const book = await this.bookService.updateById(id, dto.data);
-        return res.json(book);
+        if (book) {
+          return res.json(book);
+        } else {
+          next(
+            new HttpException(
+              HttpStatusCode.NOT_FOUND,
+              `Book with id ${id} not found.`
+            )
+          );
+        }
       }
     } catch (error) {
       next(error);
@@ -61,7 +89,16 @@ export class BookController {
     next: NextFunction
   ) {
     const id = req.params.id;
-    await this.bookService.deleteById(id);
-    res.status(HttpStatusCode.ACCEPTED).send()
+    const result = await this.bookService.deleteById(id);
+    if (result != 0) {
+      res.status(HttpStatusCode.ACCEPTED).send();
+    } else {
+      next(
+        new HttpException(
+          HttpStatusCode.NOT_FOUND,
+          `Book with id ${id} not found.`
+        )
+      );
+    }
   }
 }

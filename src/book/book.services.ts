@@ -50,7 +50,8 @@ export class BookService implements CRUD {
     return await this.bookModel.getBookById(+id ? +id : 0);
   }
   async deleteById(id: string) {
-    return await this.bookModel.deleteBookById(+id);
+    const result = await this.bookModel.deleteBookById(+id);
+    return result.affectedRows
   }
   async patchById(id: string, resource: any) {
     return "";
