@@ -1,7 +1,7 @@
 import { Expose, Type } from "class-transformer";
 import { IsDate, IsDateString, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Length } from "class-validator";
 
-export class CreateBookDTO {
+export class CreateBookDto {
 
 
     @IsNotEmpty()
@@ -11,7 +11,7 @@ export class CreateBookDTO {
     @IsString()
     description? : string;
     
-    @Expose()
+    @IsOptional()
     @IsString()
     author? : string;
 

@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { HttpStatusCode } from "../enum/http-status-code";
 import { HttpException } from "../exception";
-import { validateRequestBodyDto } from "../validator";
 import { BookService } from "./book.services";
-import { CreateBookDTO, UpdateBookDTO } from "./dto";
+import { CreateBookDto, UpdateBookDto } from "./dto";
 
 export class BookController {
   bookService: BookService;
@@ -37,17 +36,9 @@ export class BookController {
   }
   async createBook(req: Request, res: Response, next: NextFunction) {
     try {
-      const dto = await validateRequestBodyDto(CreateBookDTO, req.body);
-      if (dto.error) {
-        res.status(HttpStatusCode.BAD_REQUEST).send({
-          statusCode: HttpStatusCode.BAD_REQUEST,
-          error: "Bad Request",
-          ...dto.error,
-        });
-      } else {
-        const book = await this.bookService.create(dto.data);
-        return res.send(book);
-      }
+      const dto: CreateBookDto = req.body;
+      const book = await this.bookService.create(dto);
+      return res.send(book);
     } catch (error) {
       next(error);
     }
@@ -59,25 +50,17 @@ export class BookController {
   ) {
     try {
       const id = req.params.id;
-      const dto = await validateRequestBodyDto(UpdateBookDTO, req.body);
-      if (dto.error) {
-        res.status(HttpStatusCode.BAD_REQUEST).send({
-          statusCode: HttpStatusCode.BAD_REQUEST,
-          error: "Bad Request",
-          ...dto.error,
-        });
+      const dto: UpdateBookDto = req.body;
+      const book = await this.bookService.updateById(id, dto);
+      if (book) {
+        return res.json(book);
       } else {
-        const book = await this.bookService.updateById(id, dto.data);
-        if (book) {
-          return res.json(book);
-        } else {
-          next(
-            new HttpException(
-              HttpStatusCode.NOT_FOUND,
-              `Book with id ${id} not found.`
-            )
-          );
-        }
+        next(
+          new HttpException(
+            HttpStatusCode.NOT_FOUND,
+            `Book with id ${id} not found.`
+          )
+        );
       }
     } catch (error) {
       next(error);

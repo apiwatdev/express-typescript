@@ -1,6 +1,6 @@
 import { Expose } from "class-transformer";
-import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
-export class UpdateBookDTO {
+import { IsDate, IsDateString, isEmail, IsEmpty, IsNotEmpty, IsNumber, IsOptional, IsString, Length } from "class-validator";
+export class UpdateBookDto {
 
 
     @IsNotEmpty()
@@ -10,7 +10,7 @@ export class UpdateBookDTO {
     @IsString()
     description? : string;
     
-    @Expose()
+    @IsOptional()
     @IsString()
     author? : string;
 
