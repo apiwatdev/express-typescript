@@ -1,5 +1,5 @@
 import { Expose } from "class-transformer";
-import { IsDate, IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
+import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
 export class UpdateBookDTO {
 
 
@@ -14,8 +14,9 @@ export class UpdateBookDTO {
     @IsString()
     author? : string;
 
-    @IsDate()
-    publicationDate? : Date;
+    @IsNotEmpty()
+    @IsDateString()
+    publicationDate? : string;
 
     @IsNumber()
     @IsNotEmpty()

@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { HttpStatusCode } from "../enum/http-status-code";
 import { validateRequestBodyDto } from "../validator";
 import { BookService } from "./book.services";
-import { CreateBookDTO } from "./dto/create-book.dto";
-import { UpdateBookDTO } from "./dto/update-book.dto";
+import { CreateBookDTO,UpdateBookDTO } from "./dto";
 
 export class BookController {
   bookService: BookService;
@@ -28,7 +27,7 @@ export class BookController {
         });
       } else {
         const book = await this.bookService.create(dto.data);
-        return res.json(book);
+        return res.send(book)
       }
     } catch (error) {
       next(error);
