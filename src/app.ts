@@ -5,11 +5,9 @@ import routes from "./routes";
 import * as MySQL from "./mysql";
 import { errorMiddleware } from "./middleware";
 
-
-
-morgan('tiny')
-
 const app = express();
+
+app.use(morgan('tiny'))
 const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -12,8 +12,9 @@ export const errorMiddleware = (
   response: Response,
   next: NextFunction
 ) => {
-  const status = error.status;
-  const message = error.message;
+
+  const status = error?.status || 500;
+  const message = error?.message || 'Internal Server Error';
   const errors = error?.errors;
   const responseError: IResponseError = {
     status,

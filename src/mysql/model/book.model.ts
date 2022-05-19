@@ -1,17 +1,9 @@
 import { OkPacket } from "mysql";
 import { execute } from "..";
-
-export interface IBookModel {
-  id?: number;
-  title: string;
-  description?: string;
-  author?: string;
-  publicationDate: Date;
-  edition: number;
-}
+import { IBookModel } from "./interface";
 
 export class BookModel {
-  queries = {
+  private queries = {
     getBooks: `
         SELECT 
         id, title, description, author, publicationDate, edition

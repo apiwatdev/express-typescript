@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { HttpStatusCode } from "../enum/http-status-code";
 import { HttpException } from "../exception";
-import { BookService } from "./book.services";
+import { BookService } from "./book.service";
 import { CreateBookDto, UpdateBookDto } from "./dto";
 
 export class BookController {
@@ -11,6 +11,7 @@ export class BookController {
   }
   async getBooks(req: Request, res: Response, next: NextFunction) {
     try {
+  
       return res.send(await this.bookService.getBooks());
     } catch (error) {
       next(new HttpException());

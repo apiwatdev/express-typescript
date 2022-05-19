@@ -1,8 +1,8 @@
 import { CRUD } from "../interface/curd.interface";
 import { BookModel, execute } from "../mysql";
 
-import { CreateBookDTO } from "./dto/create-book.dto";
-import { UpdateBookDTO } from "./dto/update-book.dto";
+import { CreateBookDto } from "./dto/create-book.dto";
+import { UpdateBookDto } from "./dto/update-book.dto";
 
 const books: any = [];
 export class BookService implements CRUD {
@@ -15,7 +15,7 @@ export class BookService implements CRUD {
     return books;
   }
   async list(limit: number, page: number) {}
-  async create(dto: CreateBookDTO) {
+  async create(dto: CreateBookDto) {
     const result = await this.bookModel.addBook({
       title: dto?.title || "",
       description: dto.description,
@@ -30,7 +30,7 @@ export class BookService implements CRUD {
     const book = await this.bookModel.getBookById(result.insertId);
     return book;
   }
-  async updateById(id: string, dto: UpdateBookDTO) {
+  async updateById(id: string, dto: UpdateBookDto) {
     const result = await this.bookModel.updateBookById(+id, {
       title: dto?.title || "",
       description: dto.description,

@@ -1,4 +1,4 @@
-import { plainToClass, plainToInstance } from "class-transformer";
+import { plainToInstance } from "class-transformer";
 import { validate, ValidationError } from "class-validator";
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { HttpException } from "../exception";
